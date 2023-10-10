@@ -1,2 +1,3 @@
 # DoOrNot
-DoOrNot (ดอร์น็อต) - โครงงาน วิชา 01236254 Circuits and Electronics
+
+เป็นส่วนหนึ่งของโครงงาน วิชา 01236254 Circuit and Electronics และ วิชา 01236255 Introduction to Internet of Things

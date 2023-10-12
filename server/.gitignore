@@ -9,3 +9,5 @@
 
 # pnpm lockfile
 pnpm-lock.yaml
+
+log.csv

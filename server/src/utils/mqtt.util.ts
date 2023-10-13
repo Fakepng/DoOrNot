@@ -1,7 +1,13 @@
 import prisma from "../database/prisma.db";
 import memoryUntil from "./memory.until";
 
-async function processMQTT(message: string) {
+import { mqttClient } from "../app";
+
+async function processMQTT(topic: string, message: string) {
+  if (topic !== `${process.env.MQTT_TOPIC}/uid`) {
+    return;
+  }
+
   const payload = JSON.parse(message);
 
   memoryUntil.set("uid", payload.uid);
@@ -20,11 +26,46 @@ async function processMQTT(message: string) {
     return;
   }
 
+  await prisma.users.update({
+    where: {
+      uid: payload.uid,
+    },
+    data: {
+      counter: {
+        increment: 1,
+      },
+    },
+  });
+
   const id = user.id;
   const command = "open";
   const uuid = payload.uuid;
 
   console.log("User ID: ", id);
+
+  const stringifyPayload = JSON.stringify({ id, command, uuid });
+
+  mqttClient.publish(
+    `${process.env.MQTT_TOPIC!}/command`,
+    stringifyPayload,
+    (err) => {
+      if (err) {
+        console.log(err);
+      }
+    }
+  );
+
+  const stringifyPayloadId = JSON.stringify({ id });
+
+  mqttClient.publish(
+    `${process.env.MQTT_TOPIC!}/stat`,
+    stringifyPayloadId,
+    (err) => {
+      if (err) {
+        console.log(err);
+      }
+    }
+  );
 
   return { id, command, uuid };
 }

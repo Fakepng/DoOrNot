@@ -10,7 +10,10 @@ function open(req: Request, res: Response) {
     uuid: "b046aa47-994f-4d50-8bee-e544133294f6",
   };
 
-  mqttClient.publish(process.env.MQTT_PUBLISH!, JSON.stringify(payload));
+  mqttClient.publish(
+    `${process.env.MQTT_TOPIC!}/command`,
+    JSON.stringify(payload)
+  );
 
   return res
     .status(httpCode.OK)

@@ -15,6 +15,7 @@ import { swaggerOptions } from "./config/swagger.config";
 import basePath from "./routes/base.route";
 import openPath from "./routes/open.route";
 import latestPath from "./routes/latest.route";
+import statPath from "./routes/stat.route";
 import { processMQTT } from "./utils/mqtt.util";
 
 dotenv.config();
@@ -58,7 +59,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 mqttClient.on("connect", () => {
   console.log("MQTT Broker connected");
-  mqttClient.subscribe(process.env.MQTT_SUBSCRIBE!, (err) => {
+  mqttClient.subscribe(`${process.env.MQTT_TOPIC!}/uid`, (err) => {
     if (err) {
       console.log(err);
     }
@@ -66,19 +67,7 @@ mqttClient.on("connect", () => {
 });
 
 mqttClient.on("message", async (topic, message) => {
-  const jsonPayload = await processMQTT(message.toString());
-
-  if (!jsonPayload) {
-    return;
-  }
-
-  const payload = JSON.stringify(jsonPayload);
-
-  mqttClient.publish(process.env.MQTT_PUBLISH!, payload, (err) => {
-    if (err) {
-      console.log(err);
-    }
-  });
+  processMQTT(topic, message.toString());
 });
 
 export { mqttClient };

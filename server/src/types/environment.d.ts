@@ -3,8 +3,7 @@ declare global {
     interface ProcessEnv {
       NODE_ENV: string;
       MQTT_BROKER: string;
-      MQTT_SUBSCRIBE: string;
-      MQTT_PUBLISH: string;
+      MQTT_TOPIC: string;
       BASE_URL: string;
     }
   }

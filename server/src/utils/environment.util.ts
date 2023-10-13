@@ -7,12 +7,8 @@ function checkENV() {
     errors.push("MQTT_BROKER is not set");
   }
 
-  if (!env.MQTT_SUBSCRIBE) {
-    errors.push("MQTT_SUBSCRIBE is not set");
-  }
-
-  if (!env.MQTT_PUBLISH) {
-    errors.push("MQTT_PUBLISH is not set");
+  if (!env.MQTT_TOPIC) {
+    errors.push("MQTT_TOPIC is not set");
   }
 
   if (!env.BASE_URL) {

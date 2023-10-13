@@ -11,6 +11,7 @@ datasource db {
 }
 
 model users {
-  uid String @id
-  id  String
+  uid     String @id
+  id      String
+  counter Int    @default(0)
 }

@@ -23,8 +23,8 @@ const char* MQTT_CLIENT    = "b046aa47-994f-4d50-8bee-e544133294f6";
 const int MQTT_PORT        = 39736;
 const char* MQTT_USERNAME  = "fakepng";
 const char* MQTT_PASSWORD  = "u2e7F8qA4aACjBvD";
-const char* MQTT_SUBSCRIBE = "fakepng/status";
-const char* MQTT_PUBLISH   = "fakepng/uid";
+const char* MQTT_SUBSCRIBE = "doornot/command";
+const char* MQTT_PUBLISH   = "doornot/uid";
 
 void connectToMQTT(const char* clientId, const char* username, const char* password , const char* broker, const char* topic);
 void mqttCallback(const char* topic, byte* payload, unsigned int length);
@@ -57,6 +57,7 @@ const int DEBUG_PAUSE_MS   = 1000;
 
 void debugLed(const char* pattern);
 void debugLed(int state);
+void debugLed();
 
 void IRAM_ATTR isr() {
   openLatch();
@@ -97,6 +98,8 @@ void loop() {
 
   if (!rfid.PICC_IsNewCardPresent()) {return;}
   if (!rfid.PICC_ReadCardSerial()) {return;}
+
+  debugLed();
 
   Serial.print(F("Card UID:"));
   printHex(rfid.uid.uidByte, rfid.uid.size);
@@ -254,4 +257,13 @@ void debugLed(int state) {
   int ledOff = INVERT_DEBUG_LED ? HIGH : LOW;
 
   digitalWrite(DEBUG_LED_PIN, state ? ledOn : ledOff);
+}
+
+void debugLed() {
+  int ledOn = INVERT_DEBUG_LED ? LOW : HIGH;
+  int ledOff = INVERT_DEBUG_LED ? HIGH : LOW;
+
+  digitalWrite(DEBUG_LED_PIN, ledOn);
+  delay(DEBUG_SHORT_MS);
+  digitalWrite(DEBUG_LED_PIN, ledOff);
 }

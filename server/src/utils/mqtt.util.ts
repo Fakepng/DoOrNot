@@ -5,6 +5,7 @@ async function processMQTT(message: string) {
   const payload = JSON.parse(message);
 
   memoryUntil.set("uid", payload.uid);
+  memoryUntil.set("id", payload.id);
 
   console.log("Card UID: ", payload.uid);
 

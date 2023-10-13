@@ -6,6 +6,7 @@ import prisma from "../database/prisma.db";
 
 function latest(req: Request, res: Response) {
   const uid = memoryUntil.get("uid") || "None";
+  const id = memoryUntil.get("id") || "None";
 
   if (uid === "None") {
     return res
@@ -20,6 +21,7 @@ function latest(req: Request, res: Response) {
     error: false,
     message: httpReason.OK,
     uid,
+    id,
     add,
   });
 }
@@ -49,15 +51,13 @@ async function add(req: Request, res: Response) {
     },
   });
 
-  return res
-    .status(httpCode.CREATED)
-    .json({
-      status: httpCode.CREATED,
-      error: false,
-      message: httpReason.CREATED,
-      id,
-      uid,
-    });
+  return res.status(httpCode.CREATED).json({
+    status: httpCode.CREATED,
+    error: false,
+    message: httpReason.CREATED,
+    id,
+    uid,
+  });
 }
 
 export { latest, add };

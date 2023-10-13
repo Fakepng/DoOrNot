@@ -34,7 +34,7 @@ app.use(express.json());
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
-  res
+  return res
     .status(httpCode.INTERNAL_SERVER_ERROR)
     .send(httpReason.INTERNAL_SERVER_ERROR);
 });

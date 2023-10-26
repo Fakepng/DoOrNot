@@ -11,7 +11,8 @@ async function processMQTT(topic: string, message: string) {
   const payload = JSON.parse(message);
 
   memoryUntil.set("uid", payload.uid);
-  memoryUntil.set("id", payload.id);
+  memoryUntil.set("uuid", payload.uuid);
+  memoryUntil.set("id", "None");
 
   console.log("Card UID: ", payload.uid);
 
@@ -40,6 +41,8 @@ async function processMQTT(topic: string, message: string) {
   const id = user.id;
   const command = "open";
   const uuid = payload.uuid;
+
+  memoryUntil.set("id", id);
 
   console.log("User ID: ", id);
 

@@ -8,23 +8,24 @@
 
 const int BAUD_RATE = 9600;
 
+const char* DEVICE_NAME       = "DoOrNot";
 const char* WIFI_SSID         = "Fakepng-IoT";
 const char* WIFI_PASSWORD     = "iotengineering";
 const int WIFI_TIMEOUT_MS     = 10000;
 unsigned long lastWifiAttempt = 0;
 
+WiFiClient wifiClient;
+
 int connectToWiFi(const char* ssid, const char* pwd);
 void failedToConnectToWiFi();
 
-WiFiClient wifiClient;
 
 const char* MQTT_BROKER    = "mqtt.fakepng.dev";
 const char* MQTT_CLIENT    = "b046aa47-994f-4d50-8bee-e544133294f6";
 const int MQTT_PORT        = 39736;
 const char* MQTT_USERNAME  = "fakepng";
 const char* MQTT_PASSWORD  = "u2e7F8qA4aACjBvD";
-const char* MQTT_SUBSCRIBE = "doornot/command";
-const char* MQTT_PUBLISH   = "doornot/uid";
+const char* MQTT_TOPIC     = "doornot";
 
 void connectToMQTT(const char* clientId, const char* username, const char* password , const char* broker, const char* topic);
 void mqttCallback(const char* topic, byte* payload, unsigned int length);
@@ -34,9 +35,11 @@ PubSubClient mqttClient(wifiClient);
 
 const char* BOARD_UUID    = "b046aa47-994f-4d50-8bee-e544133294f6";
 const int PUSH_BUTTON_PIN = D3;
-const int DOOR_LATCH_PIN  = D8;
+const int DOOR_LATCH_PIN  = D0;
+const int BUZZER_PIN      = D8;
 const int KEEP_OPEN_MS    = 5000;
 int IS_OPEN               = 0;
+unsigned long lastOpen    = 0;
 
 void openLatch();
 
@@ -54,16 +57,35 @@ const int DEBUG_SHORT_MS   = 200;
 const int DEBUG_LONG_MS    = 600;
 const int DEBUG_SPACE_MS   = 600;
 const int DEBUG_PAUSE_MS   = 1000;
+const int HEARTBEAT_MS     = 10000;
+int lastHeartbeat          = 0;
 
 void debugLed(const char* pattern);
 void debugLed(int state);
 void debugLed();
 
+unsigned long lastButtonPress = 0;
 void IRAM_ATTR isr() {
+  unsigned long now = millis();
+  if (now - lastButtonPress < KEEP_OPEN_MS + 500) {return;}
+  lastButtonPress = now;
+
+  String payload;
+
+  DynamicJsonDocument doc(1024);
+  doc["uuid"] = BOARD_UUID;
+  doc["id"]  = "Push Button";
+  serializeJson(doc, payload);
+
+  char topic[100];
+  sprintf(topic,"%s%s",MQTT_TOPIC,"/stat");
+  publishMQTT(payload.c_str(), topic);
+
   openLatch();
 }
 
 void setup() {
+  digitalWrite(DOOR_LATCH_PIN, HIGH);
   Serial.begin(BAUD_RATE);
 
   pinMode(DEBUG_LED_PIN, OUTPUT);
@@ -75,10 +97,14 @@ void setup() {
   debugLed(BOOTING);
 
   WiFi.mode(WIFI_STA);
+  WiFi.hostname(DEVICE_NAME);
 
   mqttClient.setServer(MQTT_BROKER, MQTT_PORT);
   mqttClient.setCallback(mqttCallback);
-  mqttClient.subscribe(MQTT_SUBSCRIBE);
+
+  char subscribe[100];
+  sprintf(subscribe,"%s%s",MQTT_TOPIC,"/command");
+  mqttClient.subscribe(subscribe);
 
   SPI.begin();
   rfid.PCD_Init();
@@ -90,11 +116,21 @@ void loop() {
   }
 
   if (!mqttClient.connected()) {
-    connectToMQTT(MQTT_CLIENT, MQTT_USERNAME, MQTT_PASSWORD, MQTT_BROKER, MQTT_SUBSCRIBE);
+    char subscribe[100];
+    sprintf(subscribe,"%s%s",MQTT_TOPIC,"/command");
+    connectToMQTT(MQTT_CLIENT, MQTT_USERNAME, MQTT_PASSWORD, MQTT_BROKER, subscribe);
   }
   mqttClient.loop();
 
-  // unsigned long now = millis();
+  unsigned long now = millis();
+
+  if (now - lastHeartbeat > HEARTBEAT_MS) {
+    lastHeartbeat = now;
+    String payload = "{\"uuid\":\"" + String(BOARD_UUID) + "\"}";
+    char topic[100];
+    sprintf(topic,"%s%s",MQTT_TOPIC,"/heartbeat");
+    publishMQTT(payload.c_str(), topic);
+  }
 
   if (!rfid.PICC_IsNewCardPresent()) {return;}
   if (!rfid.PICC_ReadCardSerial()) {return;}
@@ -117,7 +153,9 @@ void loop() {
   doc["uid"]  = UID;
   serializeJson(doc, payload);
 
-  publishMQTT(payload.c_str(), MQTT_PUBLISH);
+  char topic[100];
+  sprintf(topic,"%s%s",MQTT_TOPIC,"/uid");
+  publishMQTT(payload.c_str(), topic);
 
   rfid.PICC_HaltA();
   rfid.PCD_StopCrypto1();
@@ -136,11 +174,19 @@ void printHex(byte *buffer, byte bufferSize) {
 void openLatch() {
   if (IS_OPEN) {return;}
 
+  unsigned long now = millis();
+  if (now - lastOpen < KEEP_OPEN_MS + 100) {return;}
+  lastOpen = now;
+
+  tone(BUZZER_PIN, 440);
+  delay(100);
+  noTone(BUZZER_PIN);
+
   IS_OPEN = 1;
   debugLed(HIGH);
-  digitalWrite(DOOR_LATCH_PIN, HIGH);
-  delay(KEEP_OPEN_MS);
   digitalWrite(DOOR_LATCH_PIN, LOW);
+  delay(KEEP_OPEN_MS);
+  digitalWrite(DOOR_LATCH_PIN, HIGH);
   debugLed(LOW);
   IS_OPEN = 0;
 }
@@ -202,7 +248,9 @@ void mqttCallback(const char* topic, byte* payload, unsigned int length) {
   }
 
   Serial.println(message);
-  if (String(topic) == MQTT_SUBSCRIBE) {
+  char subscribe[100];
+  sprintf(subscribe,"%s%s",MQTT_TOPIC,"/command");
+  if (String(topic) == subscribe) {
     DynamicJsonDocument doc(1024);
     deserializeJson(doc, message);
 

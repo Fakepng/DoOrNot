@@ -215,9 +215,7 @@ int connectToWiFi(const char* ssid, const char* pwd) {
 
 void failedToConnectToWiFi() {
   Serial.println("Failed to connect to WiFi");
-  while (1) {
-    debugLed(FAILED_TO_CONNECT_TO_WIFI);
-  }
+  debugLed(FAILED_TO_CONNECT_TO_WIFI);
 }
 
 void connectToMQTT(const char* clientId, const char* username, const char* password , const char* broker, const char* topic) {

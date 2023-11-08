@@ -20,11 +20,11 @@ int connectToWiFi(const char* ssid, const char* pwd);
 void failedToConnectToWiFi();
 
 
-const char* MQTT_BROKER    = "mqtt.fakepng.dev";
+const char* MQTT_BROKER    = "mqtt";
 const char* MQTT_CLIENT    = "b046aa47-994f-4d50-8bee-e544133294f6";
-const int MQTT_PORT        = 39736;
-const char* MQTT_USERNAME  = "fakepng";
-const char* MQTT_PASSWORD  = "u2e7F8qA4aACjBvD";
+const int MQTT_PORT        = 1883;
+const char* MQTT_USERNAME  = "username";
+const char* MQTT_PASSWORD  = "paassword";
 const char* MQTT_TOPIC     = "doornot";
 
 void connectToMQTT(const char* clientId, const char* username, const char* password , const char* broker, const char* topic);
@@ -110,6 +110,7 @@ void setup() {
   rfid.PCD_Init();
 }
 
+unsigned long lastCardRead = 0;
 void loop() {
   if (WiFi.status() != WL_CONNECTED) {
     if (!connectToWiFi(WIFI_SSID, WIFI_PASSWORD)) {failedToConnectToWiFi();}
@@ -130,10 +131,13 @@ void loop() {
     char topic[100];
     sprintf(topic,"%s%s",MQTT_TOPIC,"/heartbeat");
     publishMQTT(payload.c_str(), topic);
+    debugLed();
   }
 
   if (!rfid.PICC_IsNewCardPresent()) {return;}
   if (!rfid.PICC_ReadCardSerial()) {return;}
+
+  if (now - lastCardRead < KEEP_OPEN_MS + 500) {return;}
 
   debugLed();
 

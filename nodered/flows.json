@@ -1,0 +1,679 @@
+[
+    {
+        "id": "f6f2187d.f17ca8",
+        "type": "tab",
+        "label": "DoOrNot",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "6dd2f1d864ffd66c",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "doornot/stat",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "8de5336230aed21f",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 210,
+        "y": 520,
+        "wires": [
+            [
+                "0d6cea86882d6d84",
+                "f788b21977fc4fca",
+                "6471457eef690f47",
+                "a63760edc49dc283"
+            ]
+        ]
+    },
+    {
+        "id": "9b7e9ecc71a886a7",
+        "type": "http request",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://docs.google.com/forms/d/e/1FAIpQLSeuwYtO1X3KqhFV0LYKbhQrYBbdRzNQoKekY4fR6RGJvkSDiA/formResponse?usp=pp_url&entry.1584435239={{payload.id}}&entry.917217237={{payload.times}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 470,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0d6cea86882d6d84",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 850,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "e4a8437d4061b120",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload.id",
+                "v": "66010756",
+                "vt": "num"
+            },
+            {
+                "p": "payload.times",
+                "v": "",
+                "vt": "num"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 230,
+        "y": 420,
+        "wires": [
+            [
+                "f788b21977fc4fca",
+                "9b7e9ecc71a886a7"
+            ]
+        ]
+    },
+    {
+        "id": "f099d20854d2ec59",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Line notify",
+        "func": "msg.headers = {\n    'content-type':'application/x-www-form-urlencoded',\n    'Authorization':'Bearer 6utqzraaEWbRwA6WfAE9oPqB1lyYSQpXtqZ11FcnAZt'\n};\n\nmsg.payload = {\n    \"message\":\"Welcome \"+ msg.payload.id\n};\n\nconst sendNoti = global.get(\"sendNoti\");\n\nif (sendNoti) {\n    return msg;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 420,
+        "wires": [
+            [
+                "43dddcd3b7077851"
+            ]
+        ]
+    },
+    {
+        "id": "43dddcd3b7077851",
+        "type": "http request",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://notify-api.line.me/api/notify",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 670,
+        "y": 420,
+        "wires": [
+            [
+                "0d6cea86882d6d84"
+            ]
+        ]
+    },
+    {
+        "id": "84be70d16647529d",
+        "type": "ui_text",
+        "z": "f6f2187d.f17ca8",
+        "group": "b267a01268aabfc4",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "ID Card",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 660,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "f788b21977fc4fca",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "format id",
+        "func": "msg.payload = msg.payload.id;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 380,
+        "wires": [
+            [
+                "84be70d16647529d"
+            ]
+        ]
+    },
+    {
+        "id": "c93ea053413c7d17",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "doornot/heartbeat",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "8de5336230aed21f",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 190,
+        "y": 660,
+        "wires": [
+            [
+                "0625a5c90b7d0c89",
+                "c4e2fefbe6192470",
+                "2c3f7889c27cd07d"
+            ]
+        ]
+    },
+    {
+        "id": "0625a5c90b7d0c89",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Heartbeat",
+        "func": "const uuid = msg.payload.uuid;\n\nconst now = new Date().getTime();\n\nconst heartbeat = global.get(\"Heartbeat\") || {};\n\nheartbeat[uuid] = now;\n\nglobal.set(\"Heartbeat\", heartbeat);\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 660,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ddd004381cf11b01",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "Check hearbeat 20s",
+        "props": [
+            {
+                "p": "payload.timestamp",
+                "v": "",
+                "vt": "date"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "20",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 180,
+        "y": 700,
+        "wires": [
+            [
+                "c98b44777b77f4af"
+            ]
+        ]
+    },
+    {
+        "id": "f1f0e69d8509e520",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "debug 1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1020,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "c98b44777b77f4af",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Heartbeat",
+        "func": "const heartbeat = global.get(\"Heartbeat\");\nconst timestamp = msg.payload.timestamp;\n\nlet status = {};\n\nfor (const key in heartbeat) {\n    status[key] = (heartbeat[key] + 20 * 1000) > timestamp ? \"ONLINE\" : \"OFFLINE\";\n}\n\nmsg.payload.status = status;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 700,
+        "wires": [
+            [
+                "f1f0e69d8509e520",
+                "384eb26d9517aee1"
+            ]
+        ]
+    },
+    {
+        "id": "e38ac6b0b76eece6",
+        "type": "ui_text",
+        "z": "f6f2187d.f17ca8",
+        "group": "b267a01268aabfc4",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Controller status",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1040,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "384eb26d9517aee1",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "DoOrNot",
+        "func": "if (msg && msg.payload && msg.payload.status) {\n    const door = msg.payload.status[\"b046aa47-994f-4d50-8bee-e544133294f6\"];\n\n    msg.payload = door;\n\n    return msg;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 740,
+        "wires": [
+            [
+                "e38ac6b0b76eece6"
+            ]
+        ]
+    },
+    {
+        "id": "c4e2fefbe6192470",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "debug 2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "5f8ec8ff4df0a589",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "doornot/uid",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "8de5336230aed21f",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 210,
+        "y": 620,
+        "wires": [
+            [
+                "c4e2fefbe6192470",
+                "0625a5c90b7d0c89",
+                "2c3f7889c27cd07d"
+            ]
+        ]
+    },
+    {
+        "id": "52bf869a61de6aa8",
+        "type": "ui_text",
+        "z": "f6f2187d.f17ca8",
+        "group": "b267a01268aabfc4",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Door status",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 990,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "8021e4c3d66e9e18",
+        "type": "delay",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 620,
+        "y": 300,
+        "wires": [
+            [
+                "01c1131b3dcb0178"
+            ]
+        ]
+    },
+    {
+        "id": "6471457eef690f47",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "OPEN",
+        "func": "msg.payload = \"OPEN\";\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 340,
+        "wires": [
+            [
+                "52bf869a61de6aa8",
+                "8021e4c3d66e9e18"
+            ]
+        ]
+    },
+    {
+        "id": "01c1131b3dcb0178",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "CLOSE",
+        "func": "msg.payload = \"CLOSE\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 800,
+        "y": 300,
+        "wires": [
+            [
+                "52bf869a61de6aa8"
+            ]
+        ]
+    },
+    {
+        "id": "2c3f7889c27cd07d",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "TIME",
+        "func": "msg.payload = new Date().getTime();\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 760,
+        "wires": [
+            [
+                "c98b44777b77f4af"
+            ]
+        ]
+    },
+    {
+        "id": "9a63c2d84c7ae031",
+        "type": "ui_button",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "group": "b267a01268aabfc4",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "OPEN",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "{\"command\":\"open\",\"uuid\":\"b046aa47-994f-4d50-8bee-e544133294f6\"}",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 230,
+        "y": 200,
+        "wires": [
+            [
+                "d8ccf9a083d5c2f7"
+            ]
+        ]
+    },
+    {
+        "id": "93dc504cf47d762a",
+        "type": "mqtt out",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "doornot/command",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "8de5336230aed21f",
+        "x": 830,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "d8ccf9a083d5c2f7",
+        "type": "rate-limiter",
+        "z": "f6f2187d.f17ca8",
+        "delay_action": "ratelimit",
+        "rate": "1",
+        "nbRateUnits": "5",
+        "rateUnits": "second",
+        "drop_select": "drop",
+        "addcurrentcount": false,
+        "name": "",
+        "outputs": "1",
+        "buffer_size": "0",
+        "buffer_drop": "buffer_drop_new",
+        "emit_msg_2nd": false,
+        "control_topic": "",
+        "version": 0.0018,
+        "x": 450,
+        "y": 200,
+        "wires": [
+            [
+                "6471457eef690f47",
+                "93dc504cf47d762a"
+            ]
+        ]
+    },
+    {
+        "id": "a63760edc49dc283",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Filter button",
+        "func": "if (msg.payload.id !== \"Push Button\") {\n    return msg;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 210,
+        "y": 460,
+        "wires": [
+            [
+                "f099d20854d2ec59",
+                "9b7e9ecc71a886a7"
+            ]
+        ]
+    },
+    {
+        "id": "09aacb2bfcf0173a",
+        "type": "ui_switch",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "label": "Send Notification",
+        "tooltip": "",
+        "group": "b267a01268aabfc4",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 190,
+        "y": 820,
+        "wires": [
+            [
+                "2e9a65027d83a34d"
+            ]
+        ]
+    },
+    {
+        "id": "2e9a65027d83a34d",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "Switch sendNoti",
+        "func": "global.set(\"sendNoti\", msg.payload);\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 820,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8de5336230aed21f",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "mqtt.fakepng.dev",
+        "port": "39736",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "b267a01268aabfc4",
+        "type": "ui_group",
+        "name": "Project DoOrnot",
+        "tab": "3c8f910ac92a53ea",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "3c8f910ac92a53ea",
+        "type": "ui_tab",
+        "name": "DoOrNot",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]

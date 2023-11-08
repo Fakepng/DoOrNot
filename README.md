@@ -17,3 +17,19 @@
 ## ภาพรวมโครงงาน
 
 ![image](/assets/Design.png)
+
+## Block Diagram
+
+![block diagram](/assets/BlockDiagram.png)
+
+## ส่วนประกอบ
+
+|                     รูป                      |     ส่วนประกอบ      |         รายละเอียด         |
+| :------------------------------------------: | :-----------------: | :------------------------: |
+| ![ESP8266DevKit](/assets/ESP8266DevKit.webp) |   ESP8266 DevKit    | บอร์ดควบคุมการทำงานของระบบ |
+|     ![RFIDRC522](/assets/RFIDRC522.jpg)      | RFID Module (rc522) |     บอร์ดอ่านบัตร RFID     |
+|   ![RELAYMODULE](/assets/RELAYMODULE.jpg)    |    Relay Module     |  บอร์ดรีเลย์ควบคุมกรประตู  |
+| ![SOLENIOIDLOCK](/assets/SOLENOIDLOCK.webp)  |    Solenoid Lock    |          กรประตู           |
+|        ![Buzzer](/assets/BUZZER.jpg)         |       Buzzer        |   บอร์ดส่งเสียงแจ้งเตือน   |
+|    ![DCSTEPDOWN](/assets/DCSTEPDOWN.jpg)     |   DC-DC Step Down   |    บอร์ดแปลงกระแสไฟฟ้า     |
+|   ![POWERSUPPLY](/assets/POWERSUPPLY.jpg)    |    Power Supply     |    บอร์ดแปลงกระแสไฟฟ้า     |

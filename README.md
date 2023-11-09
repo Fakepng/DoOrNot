@@ -4,6 +4,19 @@
 
 เป็นส่วนหนึ่งของโครงงาน วิชา 01236254 Circuit and Electronics และ วิชา 01236255 Introduction to Internet of Things
 
+## Table of Contents
+
+- [DoOrNot](#doornot)
+  - [Table of Contents](#table-of-contents)
+  - [Links](#links)
+  - [รายชื่อสมาชิก](#รายชื่อสมาชิก)
+  - [แนวคิดและที่มา](#แนวคิดและที่มา)
+  - [ภาพรวมโครงงาน](#ภาพรวมโครงงาน)
+  - [Block Diagram](#block-diagram)
+  - [ส่วนประกอบ](#ส่วนประกอบ)
+  - [Tech Stack](#tech-stack)
+  - [Languages](#languages)
+
 ## Links
 
 - [Dashboard](https://doornot.fakepng.dev/ui)
@@ -28,15 +41,24 @@
 
 ## ส่วนประกอบ
 
-|                     รูป                      |            ส่วนประกอบ             |         รายละเอียด         |
-| :------------------------------------------: | :-------------------------------: | :------------------------: |
-| ![ESP8266DevKit](/assets/ESP8266DevKit.webp) |          ESP8266 DevKit           | บอร์ดควบคุมการทำงานของระบบ |
-|     ![RFIDRC522](/assets/RFIDRC522.jpg)      |        RFID Module (rc522)        |     บอร์ดอ่านบัตร RFID     |
-|   ![RELAYMODULE](/assets/RELAYMODULE.jpg)    |           Relay Module            |  บอร์ดรีเลย์ควบคุมกรประตู  |
-| ![SOLENIOIDLOCK](/assets/SOLENOIDLOCK.webp)  |           Solenoid Lock           |          กรประตู           |
-|        ![Buzzer](/assets/BUZZER.jpg)         |              Buzzer               |   บอร์ดส่งเสียงแจ้งเตือน   |
-|    ![DCSTEPDOWN](/assets/DCSTEPDOWN.jpg)     | DC-DC Step Down (12VDC -> 3.2VDC) |    บอร์ดแปลงกระแสไฟฟ้า     |
-|   ![POWERSUPPLY](/assets/POWERSUPPLY.jpg)    |  Power Supply (220VAC -> 12VDC)   |    บอร์ดแปลงกระแสไฟฟ้า     |
+|                     รูป                      |            ส่วนประกอบ             |         รายละเอียด         | ราคา (฿) |
+| :------------------------------------------: | :-------------------------------: | :------------------------: | -------: |
+| ![ESP8266DevKit](/assets/ESP8266DevKit.webp) |          ESP8266 DevKit           | บอร์ดควบคุมการทำงานของระบบ |   150.00 |
+|     ![RFIDRC522](/assets/RFIDRC522.jpg)      |        RFID Module (rc522)        |     บอร์ดอ่านบัตร RFID     |    55.00 |
+|   ![RELAYMODULE](/assets/RELAYMODULE.jpg)    |           Relay Module            |  บอร์ดรีเลย์ควบคุมกรประตู  |    58.00 |
+| ![SOLENIOIDLOCK](/assets/SOLENOIDLOCK.webp)  |           Solenoid Lock           |          กรประตู           |   190.00 |
+|        ![Buzzer](/assets/BUZZER.jpg)         |              Buzzer               |   บอร์ดส่งเสียงแจ้งเตือน   |     9.00 |
+|    ![DCSTEPDOWN](/assets/DCSTEPDOWN.jpg)     | DC-DC Step Down (12VDC -> 3.2VDC) |    บอร์ดแปลงกระแสไฟฟ้า     |    30.00 |
+|   ![POWERSUPPLY](/assets/POWERSUPPLY.jpg)    |  Power Supply (220VAC -> 12VDC)   |    บอร์ดแปลงกระแสไฟฟ้า     |   280.00 |
+|           ![PCB](/assets/PCB.jpg)            |                PCB                |       Prototype PCB        |    45.00 |
+|        ![BUTTON](/assets/BUTTON.webp)        |              Button               |           ปุ่มกด           |     9.00 |
+|      ![TERMINAL](/assets/TERMINAL.jpg)       |          Screw terminal           |         Connector          |    15.00 |
+|      ![ACSOCKET](/assets/ACSOCKET.jpg)       |          Socket AC Power          |      Socket AC Power       |    10.00 |
+|      Total (ไม่รวมค่าขนส่งและค่าอื่นๆ)       |                                   |                            |   851.00 |
+
+## Final Product
+
+![FINAL](/assets/FINAL.jpg)
 
 ## Tech Stack
 

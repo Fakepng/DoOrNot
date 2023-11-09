@@ -4,6 +4,10 @@
 
 เป็นส่วนหนึ่งของโครงงาน วิชา 01236254 Circuit and Electronics และ วิชา 01236255 Introduction to Internet of Things
 
+## Links
+
+- [Dashboard](https://doornot.fakepng.dev/ui)
+
 ## รายชื่อสมาชิก
 
 - 66010399 นายนพรุจ จิตถวิล
@@ -24,12 +28,37 @@
 
 ## ส่วนประกอบ
 
-|                     รูป                      |     ส่วนประกอบ      |         รายละเอียด         |
-| :------------------------------------------: | :-----------------: | :------------------------: |
-| ![ESP8266DevKit](/assets/ESP8266DevKit.webp) |   ESP8266 DevKit    | บอร์ดควบคุมการทำงานของระบบ |
-|     ![RFIDRC522](/assets/RFIDRC522.jpg)      | RFID Module (rc522) |     บอร์ดอ่านบัตร RFID     |
-|   ![RELAYMODULE](/assets/RELAYMODULE.jpg)    |    Relay Module     |  บอร์ดรีเลย์ควบคุมกรประตู  |
-| ![SOLENIOIDLOCK](/assets/SOLENOIDLOCK.webp)  |    Solenoid Lock    |          กรประตู           |
-|        ![Buzzer](/assets/BUZZER.jpg)         |       Buzzer        |   บอร์ดส่งเสียงแจ้งเตือน   |
-|    ![DCSTEPDOWN](/assets/DCSTEPDOWN.jpg)     |   DC-DC Step Down   |    บอร์ดแปลงกระแสไฟฟ้า     |
-|   ![POWERSUPPLY](/assets/POWERSUPPLY.jpg)    |    Power Supply     |    บอร์ดแปลงกระแสไฟฟ้า     |
+|                     รูป                      |            ส่วนประกอบ             |         รายละเอียด         |
+| :------------------------------------------: | :-------------------------------: | :------------------------: |
+| ![ESP8266DevKit](/assets/ESP8266DevKit.webp) |          ESP8266 DevKit           | บอร์ดควบคุมการทำงานของระบบ |
+|     ![RFIDRC522](/assets/RFIDRC522.jpg)      |        RFID Module (rc522)        |     บอร์ดอ่านบัตร RFID     |
+|   ![RELAYMODULE](/assets/RELAYMODULE.jpg)    |           Relay Module            |  บอร์ดรีเลย์ควบคุมกรประตู  |
+| ![SOLENIOIDLOCK](/assets/SOLENOIDLOCK.webp)  |           Solenoid Lock           |          กรประตู           |
+|        ![Buzzer](/assets/BUZZER.jpg)         |              Buzzer               |   บอร์ดส่งเสียงแจ้งเตือน   |
+|    ![DCSTEPDOWN](/assets/DCSTEPDOWN.jpg)     | DC-DC Step Down (12VDC -> 3.2VDC) |    บอร์ดแปลงกระแสไฟฟ้า     |
+|   ![POWERSUPPLY](/assets/POWERSUPPLY.jpg)    |  Power Supply (220VAC -> 12VDC)   |    บอร์ดแปลงกระแสไฟฟ้า     |
+
+## Tech Stack
+
+- [VS Code](https://code.visualstudio.com/): IDE
+- [PlatformIO](https://platformio.org/): Arduino compiler
+- [Node.js](https://nodejs.org/en/): Javascript runtime
+- [Express.js](https://expressjs.com/): Web framework for Node.js
+- [Typescript](https://www.typescriptlang.org/): Strong type Javascript
+- [Prisma](https://www.prisma.io/): Typescript ORM
+- [PostgreSQL](https://www.postgresql.org/): Database
+- [Node-RED](https://nodered.org/): Flow-based programming for IoT
+- [Mosquitto](https://mosquitto.org/): MQTT broker
+- [Docker](https://www.docker.com/): Containerization
+- [Portainer](https://www.portainer.io/): Docker management
+- [Cloudflare](https://www.cloudflare.com/): DNS, CDN, SSL
+- [Cloudflare Tunnel](https://www.cloudflare.com/products/tunnel/): Expose local server to the internet
+- [Nginx Proxy Manager](https://nginxproxymanager.com/): Reverse proxy
+- [Proxmox](https://www.proxmox.com/en/): Hypervisor
+- [GitHub](https://github.com): Version control
+
+## Languages
+
+- [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+- [Typescript](https://www.typescriptlang.org/)
+- [C++](https://en.wikipedia.org/wiki/C%2B%2B)

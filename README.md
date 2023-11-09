@@ -14,6 +14,7 @@
   - [ภาพรวมโครงงาน](#ภาพรวมโครงงาน)
   - [Block Diagram](#block-diagram)
   - [ส่วนประกอบ](#ส่วนประกอบ)
+  - [Final Product](#final-product)
   - [Tech Stack](#tech-stack)
   - [Languages](#languages)
 
